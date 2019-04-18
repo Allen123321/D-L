@@ -23,6 +23,7 @@ import numpy as np
 import random
 import math
 from PIL import Image
+import matplotlib.pyplot as plt
 
 from tensorflow.examples.tutorials.mnist import input_data
 
@@ -291,7 +292,8 @@ def combine_imgs(batch_imgs,img_size,rows= 8 ,cols = 16):
 
 init_op = tf.global_variables_initializer()
 train_steps = 10000
-
+Dis_losses= []
+Gen_losses=[]
 with tf.Session() as sess:
     sess.run(init_op)
     for step in range(train_steps):
@@ -305,16 +307,29 @@ with tf.Session() as sess:
                                      z_placeholder:batch_z,
                                      img_placeholder:batch_imgs
                                  })
-         _, g_loss_val,d_loss_val = output_values[0:3]
-         logging.info('step: %4d, g_loss: %4.3f,d_loss:%4.3f' %(step,g_loss_val,d_loss_val))
+        _, g_loss_val,d_loss_val = output_values[0:3]
+        Dis_losses.append(d_loss_val)
+        Gen_losses.append(g_loss_val)
+        logging.info('step: %4d, g_loss: %4.3f,d_loss:%4.3f' %(step,g_loss_val,d_loss_val))
         if should_sample:
             gen_imgs_val = output_values[3]
             gen_img_path = os.path.join(output_dir,'%05d-gen.jpg' % (step+1))
             gt_img_path = os.path.join(output_dir,'%05d-gt.jpg' % (step +1))
             gen_img = combine_imgs(gen_imgs_val,hps.img_size)
             gt_img = combine_imgs(batch_imgs,hps.img_size)
-             gen_img.save(gen_img_path)
+            gen_img.save(gen_img_path)
             gt_img.save(gt_img_path)
+
+
+plt.title('Result Analysis')
+plt.plot(Dis_losses, color='green', label='Discriminator loss')
+plt.plot(Gen_losses, color='red', label='Generator loss')
+
+plt.legend()
+plt.xlabel('step')
+plt.ylabel('rate')
+plt.savefig("loss.jpg")
+plt.show()
 
 
 
