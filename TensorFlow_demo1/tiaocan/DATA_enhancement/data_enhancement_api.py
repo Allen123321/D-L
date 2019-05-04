@@ -58,7 +58,7 @@ plt.show()
 """
 
 """--------------------------------------"""
-"""#corp 裁剪
+#corp 裁剪
 #tf.image.pad_to_bounding_box
 #tf.image.crop_to_bounding_box
 #tf.random_crop
@@ -67,17 +67,16 @@ img_string = tf.read_file(name)
 img_decoded = tf.image.decode_image(img_string)
 img_decoded = tf.reshape(img_decoded,[1,208,242,3])
 
-padded_img = tf.image.pad_to_bounding_box(img_decoded,50,100,300,400)
+padded_img = tf.image.pad_to_bounding_box(img_decoded,10,1,224,224)
 sess = tf.Session()
 img_decoded_val = sess.run(padded_img)
-img_decoded_val = img_decoded_val.reshape((300,400,3))
+img_decoded_val = img_decoded_val.reshape((224,224,3))
 img_decoded_val = np.asarray(img_decoded_val,np.uint8)
 print(img_decoded_val.shape)
 
 plt.imshow(img_decoded_val)
 plt.show()
 
-"""
 """--------------------------------------"""
 """
 #flip 翻转
@@ -108,20 +107,20 @@ plt.show()
 #tf.image.random_brightness
 #tf.image.adjust_constrast
 #tf.image.random_constrast
-name = './heart.jpg'
-img_string = tf.read_file(name)
-img_decoded = tf.image.decode_image(img_string)
-img_decoded = tf.reshape(img_decoded,[1,208,242,3])
-
-new_img = tf.image.adjust_brightness(img_decoded,+0.3)
-
-sess = tf.Session()
-img_decoded_val = sess.run(new_img)
-img_decoded_val = img_decoded_val.reshape((208,242,3))
-img_decoded_val = np.asarray(img_decoded_val,np.uint8)
-print(img_decoded_val.shape)
-
-plt.imshow(img_decoded_val)
-plt.show()
+# name = './heart.jpg'
+# img_string = tf.read_file(name)
+# img_decoded = tf.image.decode_image(img_string)
+# img_decoded = tf.reshape(img_decoded,[1,208,242,3])
+#
+# new_img = tf.image.adjust_brightness(img_decoded,+0.3)
+#
+# sess = tf.Session()
+# img_decoded_val = sess.run(new_img)
+# img_decoded_val = img_decoded_val.reshape((208,242,3))
+# img_decoded_val = np.asarray(img_decoded_val,np.uint8)
+# print(img_decoded_val.shape)
+#
+# plt.imshow(img_decoded_val)
+# plt.show()
 
 
